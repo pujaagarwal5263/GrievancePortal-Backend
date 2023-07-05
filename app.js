@@ -2,11 +2,13 @@ const express=require('express');
 require('./db/conn');
 const dotenv=require("dotenv");
 const mongoose=require('mongoose');
+const cors = require('cors');
 
 const User=require('./model/userSchema');
 const Router=require('./router/auth');
 
 const app=express();
+app.use(cors());
 const cookieParser=require("cookie-parser");
 app.use(cookieParser());
 app.use(express.json());
