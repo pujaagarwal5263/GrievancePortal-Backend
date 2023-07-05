@@ -8,7 +8,8 @@ const User=require('./model/userSchema');
 const Router=require('./router/auth');
 
 const app=express();
-app.use(cors());
+// Enable CORS for all origins
+app.use(cors({ origin: '*' }));
 const cookieParser=require("cookie-parser");
 app.use(cookieParser());
 app.use(express.json());
