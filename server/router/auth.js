@@ -241,8 +241,8 @@ router.post("/aAbBcC/updatedocs",async(req,res)=>{
     console.log(req.body);
     const {email,dept,_id,gId,status,feedback}=req.body;
     
-    if(!email || !dept || !_id || !gId || !status || !feedback){
-      res.status(400).json({message:"Please send data"});
+    if(!email || !dept || !_id || !gId || !feedback){
+      return res.status(400).json({message:"Please send data"});
     }
     
     const doc=await User.updateOne({_id},
