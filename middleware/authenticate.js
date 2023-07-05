@@ -4,6 +4,9 @@ const User=require('../model/userSchema');
 const authenticate=async(req,res,next)=>{
     try{
       const token= req.cookies.jwtoken;
+      if(!token){
+        throw "Token Not Provided"
+      }
       const verifyToken= jwt.verify(token,"thisisoursecretkey");
 
       const rootUser= await User.findOne({_id:verifyToken._id, "tokens.token":token});

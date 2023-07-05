@@ -18,7 +18,7 @@ dotenv.config({path:'./config.env'});
 
 require('./middleware/authenticate');
 
-const port=process.env.PORT;
+const port=8000;
 app.use(express.urlencoded({ extended: false }));
 
 app.listen(port,()=>{
