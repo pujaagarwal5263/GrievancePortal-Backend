@@ -9,7 +9,10 @@ const Router=require('./router/auth');
 
 const app=express();
 // Enable CORS for all origins
-app.use(cors({ origin: '*' }));
+app.use(cors({
+    origin: 'https://grievance360.vercel.app', // Replace with the actual origin of your frontend application
+    credentials: true // Enable sending cookies with the request
+  }));
 const cookieParser=require("cookie-parser");
 app.use(cookieParser());
 app.use(express.json());

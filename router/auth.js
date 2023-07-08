@@ -89,12 +89,12 @@ router.post("/signin",async(req,res)=>{
     else{
     //storing token in a cookie
     //res.cookie(name,values)
-    res.cookie("jwtoken",token,{
-      //will expire in 30 days (coverted to millisecond)
-      expires:new Date(Date.now()+25892000000)
-    });
+    // res.cookie("jwtoken",token,{
+    //   //will expire in 30 days (coverted to millisecond)
+    //   expires:new Date(Date.now()+25892000000)
+    // });
 
-    return res.status(200).json({message:"Login Succesful"})
+    return res.status(200).json({token:token,message:"Login Succesful"})
     }
     }
     //if user does not exist
