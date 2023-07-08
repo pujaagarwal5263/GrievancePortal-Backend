@@ -151,7 +151,7 @@ router.post("/grievance",async(req,res)=>{
           console.log("Empty data in grievance portal");
           return res.status(400).json({error:"Please fill all the details"});
        }
-       const userContact=await User.findOne({_id: req.userID});
+       const userContact=await User.findOne({_id: userID});
        if(userContact){
           const userMsg=await userContact.addGrievance(name,email,phone,dept,grievance);
           await userContact.save();
