@@ -3,7 +3,7 @@ const User=require('../model/userSchema');
 
 const authenticate=async(req,res,next)=>{
     try{
-      console.log(req.cookies.jwtoken)
+      console.log(req.cookies)
       const tokenString= req.cookies.jwtoken;
       const splitToken = tokenString.split('jwtoken=');
       const token = splitToken[1];
