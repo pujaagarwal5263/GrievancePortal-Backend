@@ -3,7 +3,7 @@ const User=require('../model/userSchema');
 
 const authenticate=async(req,res,next)=>{
     try{
-      console.log(req.cookies.jwtoken)
+      console.log(req.cookies)
       const token= req.cookies.jwtoken;
 
       if(!token){
