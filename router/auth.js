@@ -144,7 +144,7 @@ router.get("/getdata",async(req,res)=>{
 //to post grievance
 router.post("/grievance",async(req,res)=>{
     try{
-      await authenticate(req,res,token);
+     // await authenticate(req,res,token);
        const {name,email,phone,dept,grievance}=req.body;
 
        if(!name || !email || !phone || !grievance) {
