@@ -144,30 +144,29 @@ router.get("/getdata",async(req,res)=>{
 //to post grievance
 router.post("/grievance",async(req,res)=>{
     try{
-     // await authenticate(req,res,token);
        const {name,email,phone,dept,grievance}=req.body;
 
        if(!name || !email || !phone || !grievance) {
           console.log("Empty data in grievance portal");
           return res.status(400).json({error:"Please fill all the details"});
        }
-       const userContact=await User.findOne({_id: userID});
+       const userContact=await User.findOne({email: email});
        if(userContact){
           const userMsg=await userContact.addGrievance(name,email,phone,dept,grievance);
           await userContact.save();
 
-          const message={
-            to:`${email}`,
-            from: 'dangerouspanditain@gmail.com',
-            //name:"Grievace Portal",
-            subject:'Grievance Filed!!',
-            text:`${name}, Your grievance has been successfully filed`
-          };
+          // const message={
+          //   to:`${email}`,
+          //   from: 'dangerouspanditain@gmail.com',
+          //   //name:"Grievace Portal",
+          //   subject:'Grievance Filed!!',
+          //   text:`${name}, Your grievance has been successfully filed`
+          // };
 
-          //sending mail
-          sgMail.send(message)
-          .then(response => {console.log("Message sent")})
-          .catch(err => {console.log(err)});
+          // //sending mail
+          // sgMail.send(message)
+          // .then(response => {console.log("Message sent")})
+          // .catch(err => {console.log(err)});
           
           return res.status(200).json({message:"Grievance Filed Successfully"});
         }
