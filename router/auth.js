@@ -14,7 +14,7 @@ const User=require('../model/userSchema');
 //router.use(require("cookie-parser"));
 
 let tempList;
-let token;
+let token,userID, rootUser;
 
 const authenticate=async(req,res,token)=>{
   try{
@@ -23,14 +23,14 @@ const authenticate=async(req,res,token)=>{
     }
     const verifyToken= jwt.verify(token,"thisisoursecretkey");
 
-    const rootUser= await User.findOne({_id:verifyToken._id, "tokens.token":token});
+    const rootUser1= await User.findOne({_id:verifyToken._id, "tokens.token":token});
 
-    if(!rootUser){
+    if(!rootUser1){
         throw new Error('User Not Found');
     }
     req.token=token;
-    req.rootUser=rootUser;
-    req.userID=rootUser._id;
+    rootUser=rootUser1;
+    userID=rootUser._id;
     return;
   }catch(err){
       res.status(400).send('Unauthorized: No token provided');
@@ -132,13 +132,13 @@ router.post("/signin",async(req,res)=>{
 
 router.get("/about",async(req,res)=>{
   await authenticate(req,res,token);
-  res.send(req.rootUser);
+  res.send(rootUser);
 });
 
 //to get grievances
 router.get("/getdata",async(req,res)=>{
   await authenticate(req,res,token);
-  res.send(req.rootUser);
+  res.send(rootUser);
 })
 
 //to post grievance
