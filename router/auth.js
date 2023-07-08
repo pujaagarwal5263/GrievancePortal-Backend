@@ -3,7 +3,7 @@ const express=require('express');
 const router=express.Router();
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
-const authenticate=require('../middleware/authenticate');
+// const authenticate=require('../middleware/authenticate');
 
 const sgMail = require('@sendgrid/mail');
 const API_KEY="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";
@@ -14,6 +14,29 @@ const User=require('../model/userSchema');
 //router.use(require("cookie-parser"));
 
 let tempList;
+let token;
+
+const authenticate=async(req,res,token)=>{
+  try{
+    if(!token){
+      throw "Token Not Provided"
+    }
+    const verifyToken= jwt.verify(token,"thisisoursecretkey");
+
+    const rootUser= await User.findOne({_id:verifyToken._id, "tokens.token":token});
+
+    if(!rootUser){
+        throw new Error('User Not Found');
+    }
+    req.token=token;
+    req.rootUser=rootUser;
+    req.userID=rootUser._id;
+    return;
+  }catch(err){
+      res.status(400).send('Unauthorized: No token provided');
+      console.log(err);
+  }
+} 
 
 router.get("/",(req,res)=>{
   res.send("Yess!!! Server is running")
@@ -81,7 +104,7 @@ router.post("/signin",async(req,res)=>{
      //console.log(`isMatch= ${isMatch}`);
     
      //creating a token
-    const token=await userLogin.generateAuthToken();
+     token=await userLogin.generateAuthToken();
 
     if(!isMatch){
       return res.status(400).json({ error:"Invalid Credentials"})
@@ -107,18 +130,21 @@ router.post("/signin",async(req,res)=>{
   } 
 })
 
-router.get("/about",authenticate,(req,res)=>{
+router.get("/about",async(req,res)=>{
+  await authenticate(req,res,token);
   res.send(req.rootUser);
 });
 
 //to get grievances
-router.get("/getdata",authenticate,(req,res)=>{
+router.get("/getdata",async(req,res)=>{
+  await authenticate(req,res,token);
   res.send(req.rootUser);
 })
 
 //to post grievance
-router.post("/grievance",authenticate,async(req,res)=>{
+router.post("/grievance",async(req,res)=>{
     try{
+      await authenticate(req,res,token);
        const {name,email,phone,dept,grievance}=req.body;
 
        if(!name || !email || !phone || !grievance) {
