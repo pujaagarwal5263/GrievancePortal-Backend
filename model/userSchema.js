@@ -56,9 +56,19 @@ const userSchema=new mongoose.Schema({
             type:String,
             required:true
         },
+        status:{
+            type: String,
+        },
+        feedback:{
+            type: String
+        },
         grievance:{
         type:String,
         required:true
+        },
+        date:{
+            type: Date,
+            default: Date.now
         }
     }
     ],
